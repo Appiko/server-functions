@@ -7,3 +7,6 @@ node_modules
 
 # FCM JSON
 sense-ele-firebase-service-account.json
+
+#Image uploads
+uploads
