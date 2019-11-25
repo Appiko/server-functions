@@ -31,24 +31,25 @@ app.post('/image/:filename', function (req, res) {
 
     saveImage(`${req.params.filename}_${Date.now()}_${req.params.filename.split('.').pop()}`, req.body);
 
-    const message = {
-        to: '/topics/image',
-        notification: {
-            title: `Image`,
-            body: `Image captured`,
-        },
-    }
+    res.sendStatus(200);
+    // const message = {
+    //     to: '/topics/image',
+    //     notification: {
+    //         title: `Image`,
+    //         body: `Image captured`,
+    //     },
+    // }
 
-    fcm.send(message, function (err, response) {
-        if (err) {
-            console.log(`Something has gone wrong! ${err}`)
+    // fcm.send(message, function (err, response) {
+    //     if (err) {
+    //         console.log(`Something has gone wrong! ${err}`)
 
-            res.status(500).send(`Something went wrong! ${err}🚨🚨`)
-        } else {
-            console.log(`Sent alert for image`)
-            res.sendStatus(200).send("Sent alert for incoming image")
-        }
-    })
+    //         res.status(500).send(`Something went wrong! ${err}🚨🚨`)
+    //     } else {
+    //         console.log(`Sent alert for image`)
+    //         res.sendStatus(200).send("Sent alert for incoming image")
+    //     }
+    // })
 
 });
 
