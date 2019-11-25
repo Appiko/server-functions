@@ -15,8 +15,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.raw({ type: 'image/png', limit: '50mb' }))
 
 const FCM = require('fcm-node')
-// const serverKey = require('./sense-ele-firebase-service-account.json')
-// const fcm = new FCM(serverKey)
+const serverKey = require('./sense-ele-firebase-service-account.json')
+const fcm = new FCM(serverKey)
 
 
 app.listen(PORT, () => {
@@ -46,6 +46,7 @@ app.post('/image/:filename', function (req, res) {
             res.status(500).send(`Something went wrong! ${err}🚨🚨`)
         } else {
             console.log(`Sent alert for image`)
+            res.sendStatus(200).send("Sent alert for incoming image")
         }
     })
 
