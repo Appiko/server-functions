@@ -38,7 +38,7 @@ app.get('/image', upload.single('image'), function (req, res, next) {
     const message = {
         to: '/topics/image',
         notification: {
-            title: `🚨🚨 Alert!! 🐘🏃`,
+            title: `Image`,
             body: `Image captured`,
         },
     }
@@ -49,8 +49,8 @@ app.get('/image', upload.single('image'), function (req, res, next) {
 
             res.status(500).send(`Something went wrong! ${err}🚨🚨`)
         } else {
-            console.log(`Sent alert for node ${node}`)
+            console.log(`Sent alert for image`)
         }
     })
-    res.send(`Sent alert for node ${node}`);
+    res.send(`Sent alert for image`);
 });
