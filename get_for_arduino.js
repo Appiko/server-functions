@@ -20,12 +20,19 @@ app.get('/alert', (req, res) => {
 
 	let queryByte = req.query.q;
 	console.log(queryByte);
+
 	let node;
 	switch (queryByte) {
 		case 'A':
+			node = '4c:56:9c:9f:7f:b5'
 		case 'B':
+			node = 'cc:3f:70:e1:bc:f7'
 		case 'C':
-			node = 'f5:ad:a7:4b:66:bc'
+			node = '32:5d:cf:3f:cb:da'
+		case 'D':
+			node = 'e4:34:d4:dd:7c:9a'
+		case 'E':
+			node = '28:f0:7b:4c:99:1e'
 	}
 
 	if (node != undefined) {
