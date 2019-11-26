@@ -62,7 +62,6 @@ app.post('/image/:filename', function (req, res) {
             console.log(`Sent alert for new image`)
         }
     })
-    res.send(`Sent alert`);
 });
 
 
