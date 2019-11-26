@@ -1,19 +1,25 @@
 const APP_NAME = "Image upload"
-const PORT = 3100
+const PORT = 3200
 
 
 
-
-const app = require('express')()
+const express = require('express')
+const app = express()
 const bodyParser = require('body-parser')
 const helmet = require('helmet')
-var stringify = require('json-stringify-safe');
-const fs = require('fs');
+const path = require('path')
+var stringify = require('json-stringify-safe')
+const fs = require('fs')
+const serveIndex = require('serve-index')
 
 app.use(helmet())
 app.use(bodyParser.json())
 app.use(bodyParser.raw({ type: 'image/png', limit: '50mb' }))
 
+
+
+app.use('/uploads', serveIndex((path.join(__dirname, 'uploads'))));
+app.use('/uploads', express.static((path.join(__dirname, 'uploads'))));
 const FCM = require('fcm-node')
 const serverKey = require('./sense-ele-firebase-service-account.json')
 const fcm = new FCM(serverKey)
@@ -29,29 +35,36 @@ app.get('/image', function (req, res, next) {
 
 app.post('/image/:filename', function (req, res) {
 
-    saveImage(`${req.params.filename}_${Date.now()}_${req.params.filename.split('.').pop()}`, req.body);
+    fileName = `${req.params.filename}_${Date.now()}.${req.params.filename.split('.').pop()}`
+    saveImage(fileName, req.body);
 
     res.sendStatus(200);
-    // const message = {
-    //     to: '/topics/image',
-    //     notification: {
-    //         title: `Image`,
-    //         body: `Image captured`,
-    //     },
-    // }
 
-    // fcm.send(message, function (err, response) {
-    //     if (err) {
-    //         console.log(`Something has gone wrong! ${err}`)
+    const message = {
+        to: `/topics/image`,
+        notification: {
+            title: "New Image captured",
+            body: fileName,
+            click_action: "FLUTTER_NOTIFICATION_CLICK",
+        },
+        data: {
+            title: "New Image captured",
+            body: fileName,
+        }
+    }
 
-    //         res.status(500).send(`Something went wrong! ${err}🚨🚨`)
-    //     } else {
-    //         console.log(`Sent alert for image`)
-    //         res.sendStatus(200).send("Sent alert for incoming image")
-    //     }
-    // })
+    fcm.send(message, function (err, response) {
+        if (err) {
+            console.log(`Something has gone wrong! ${err}`)
 
+            res.status(500).send(`Something went wrong! ${err}🚨🚨`)
+        } else {
+            console.log(`Sent alert for new image`)
+        }
+    })
+    res.send(`Sent alert`);
 });
+
 
 function saveImage(filename, data) {
     var myBuffer = new Buffer.alloc(data.length);

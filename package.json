@@ -16,6 +16,7 @@
     "fcm-node": "^1.5.2",
     "fs": "0.0.1-security",
     "helmet": "^3.21.2",
-    "json-stringify-safe": "^5.0.1"
+    "json-stringify-safe": "^5.0.1",
+    "serve-index": "^1.9.1"
   }
 }
