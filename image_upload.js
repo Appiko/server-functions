@@ -1,5 +1,5 @@
 const APP_NAME = "Image upload"
-const PORT = 3200
+const PORT = 3600
 
 
 
