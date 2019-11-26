@@ -28,7 +28,7 @@ app.get('/alert', (req, res) => {
 		case 'B':
 			node = 'cc:3f:70:e1:bc:f7'
 		case 'C':
-			node = '32:5d:cf:3f:cb:da'
+			node = 'f2:5d:cf:3f:cb:da'
 		case 'D':
 			node = 'e4:34:d4:dd:7c:9a'
 		case 'E':
