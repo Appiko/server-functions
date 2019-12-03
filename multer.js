@@ -1,6 +1,9 @@
+const PORT = 3700
 var express = require('express')
 var multer = require('multer')
 var helmet = require('helmet')
+
+var app = express();
 
 app.use(helmet());
 
@@ -23,7 +26,6 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage });
 
-var app = express()
 
 app.post('/image', upload.single('image'), function (req, res, next) {
     if (req.file) {
@@ -55,4 +57,4 @@ app.post('/image', upload.single('image'), function (req, res, next) {
     }
 })
 
-app.listen(3000, () => console.log(3000));
+app.listen(3700, () => console.log(3700));
