@@ -57,4 +57,4 @@ app.post('/image', upload.single('image'), function (req, res, next) {
     }
 })
 
-app.listen(3700, () => console.log(3700));
+app.listen(PORT, () => console.log(PORT));
