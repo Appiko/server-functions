@@ -30,7 +30,7 @@ app.post('/chunked/:filename', function (req, res) {
                     console.error(`err: ${err}`);
                 } else if (stdout) {
                     console.log(`stdout: ${stdout}`);
-                    exec(`ppmtojpeg ${__dirname}/uploads/r/${fileName} > ${__dirname}/uploads/r/${fileName}.jpg`, function (err, stdout, stderr) {
+                    exec(`ppmtojpeg --quality=100 ${__dirname}/uploads/r/${fileName} > ${__dirname}/uploads/r/${fileName}.jpg`, function (err, stdout, stderr) {
                         if (err) {
                             console.error(`err: ${err}`);
                         } else if (stdout) {
