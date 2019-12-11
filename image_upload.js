@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const serveIndex = require('serve-index');
 const fs = require('fs');
 const path = require('path');
+const { exec } = require('child_process');
 
 const FCM = require('fcm-node')
 const serverKey = require('./sense-ele-firebase-service-account.json')
@@ -22,7 +23,26 @@ app.listen(PORT, console.log(PORT));
 app.post('/chunked/:filename', function (req, res) {
 
     fileName = `/chunked/${req.params.filename}_${Date.now()}.${req.params.filename.split('.').pop()}`
-    saveImage(fileName, req.body);
+    saveImage(fileName, req.body).then(
+        function () {
+            let convert = exec(`${__dirname}/../python-scripts/bayer_converion/a.out  ${__dirname}/uploads/r/${fileName} ${__dirname}/uploads/r/${fileName}.ppm`, function (err, stdout, stderr) {
+
+                if (err) {
+                    console.error(`err: ${err}`);
+
+                } else if (stdout) {
+                    console.log(`stdout: ${stdout}`);
+
+                } else if (stderr) {
+                    console.error(`stderr: ${stderr}`);
+
+                }
+
+            });
+
+
+        });
+
     res.sendStatus(200);
 
 
@@ -35,7 +55,7 @@ app.post('/chunked/:filename', function (req, res) {
         },
         data: {
             title: "New Image captured",
-            body: fileName,
+            body: `${fileName}.ppm`,
         }
     }
 
@@ -52,15 +72,20 @@ app.post('/chunked/:filename', function (req, res) {
 });
 
 function saveImage(filename, data) {
-    var myBuffer = new Buffer.alloc(data.length);
-    for (var i = 0; i < data.length; i++) {
-        myBuffer[i] = data[i];
-    }
-    fs.writeFile(`${__dirname}/uploads/r/` + filename, myBuffer, function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("The file was saved!");
+    return new Promise(function (resolve, reject) {
+
+        var myBuffer = new Buffer.alloc(data.length);
+        for (var i = 0; i < data.length; i++) {
+            myBuffer[i] = data[i];
         }
+        fs.writeFile(`${__dirname}/uploads/r/` + filename, myBuffer, function (err) {
+            if (err) {
+                console.log(err);
+                reject();
+            } else {
+                console.log("The file was saved!");
+                resolve();
+            }
+        });
     });
 }
