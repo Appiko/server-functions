@@ -25,22 +25,24 @@ app.post('/chunked/:filename', function (req, res) {
     fileName = `/chunked/${req.params.filename}_${Date.now()}.${req.params.filename.split('.').pop()}`
     saveImage(fileName, req.body).then(
         function () {
-            let convert = exec(`${__dirname}/../python-scripts/bayer_converion/a.out  ${__dirname}/uploads/r/${fileName} ${__dirname}/uploads/r/${fileName}.ppm`, function (err, stdout, stderr) {
-
+            exec(`${__dirname}/../python-scripts/bayer_converion/a.out  ${__dirname}/uploads/r/${fileName} ${__dirname}/uploads/r/${fileName}`, function (err, stdout, stderr) {
                 if (err) {
                     console.error(`err: ${err}`);
-
                 } else if (stdout) {
                     console.log(`stdout: ${stdout}`);
-
+                    exec(`ppmtojpeg ${__dirname}/uploads/r/${fileName} > ${__dirname}/uploads/r/${fileName}.jpg`, function (err, stdout, stderr) {
+                        if (err) {
+                            console.error(`err: ${err}`);
+                        } else if (stdout) {
+                            console.log(`stdout: ${stdout}`);
+                        } else if (stderr) {
+                            console.error(`stderr: ${stderr}`);
+                        }
+                    });
                 } else if (stderr) {
                     console.error(`stderr: ${stderr}`);
-
                 }
-
             });
-
-
         });
 
     res.sendStatus(200);
@@ -50,12 +52,12 @@ app.post('/chunked/:filename', function (req, res) {
         to: `/topics/image`,
         notification: {
             title: "New Image captured",
-            body: fileName,
+            body: `${fileName}.jpg`,
             click_action: "FLUTTER_NOTIFICATION_CLICK",
         },
         data: {
             title: "New Image captured",
-            body: `${fileName}.ppm`,
+            body: `${fileName}.jpg`,
         }
     }
 
