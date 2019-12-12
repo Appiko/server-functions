@@ -21,7 +21,7 @@ app.use('/uploads', express.static((path.join(__dirname, 'uploads'))));
 app.listen(PORT, console.log(PORT));
 
 
-app.get('/get-closed', function (req, res) {
+app.get('/gate-closed', function (req, res) {
     const message = {
         to: `/topics/image`,
         notification: {
