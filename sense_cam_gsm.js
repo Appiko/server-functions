@@ -21,7 +21,7 @@ app.use('/uploads', express.static((path.join(__dirname, 'uploads'))));
 app.listen(PORT, console.log(PORT));
 
 
-app.get('/gate-closed', function (req, res) {
+app.get('/cage-closed', function (req, res) {
     const message = {
         to: `/topics/image`,
         notification: {
@@ -57,24 +57,25 @@ app.post('/chunked/:filename', function (req, res) {
         to: `/topics/image`,
         notification: {
             title: "New Image captured",
-            body: `${fileName}.jpg`,
+            body: fileName,
             click_action: "FLUTTER_NOTIFICATION_CLICK",
         },
         data: {
             title: "New Image captured",
-            body: `${fileName}.jpg`,
-        }
+            body: fileName
+        },
     }
+}
 
     fcm.send(message, function (err, response) {
-        if (err) {
-            console.log(`Something has gone wrong! ${err}`)
+    if (err) {
+        console.log(`Something has gone wrong! ${err}`)
 
-            res.status(500).send(`Something went wrong! ${err}🚨🚨`)
-        } else {
-            console.log(`Sent alert for new image`)
-        }
-    })
+        res.status(500).send(`Something went wrong! ${err}🚨🚨`)
+    } else {
+        console.log(`Sent alert for new image`)
+    }
+})
 
 });
 
