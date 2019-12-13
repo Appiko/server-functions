@@ -62,20 +62,19 @@ app.post('/chunked/:filename', function (req, res) {
         },
         data: {
             title: "New Image captured",
-            body: fileName
-        },
+            body: fileName,
+        }
     }
-}
 
     fcm.send(message, function (err, response) {
-    if (err) {
-        console.log(`Something has gone wrong! ${err}`)
+        if (err) {
+            console.log(`Something has gone wrong! ${err}`)
 
-        res.status(500).send(`Something went wrong! ${err}🚨🚨`)
-    } else {
-        console.log(`Sent alert for new image`)
-    }
-})
+            res.status(500).send(`Something went wrong! ${err}🚨🚨`)
+        } else {
+            console.log(`Sent alert for new image`)
+        }
+    })
 
 });
 
