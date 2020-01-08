@@ -3,8 +3,8 @@ const PORT = 3100
 const DIR_NAME = "/light-logs"
 
 
-
-const app = require('express')()
+const express = require('express')
+const app = express()
 const bodyParser = require('body-parser')
 const helmet = require('helmet')
 const fs = require('fs')
@@ -16,7 +16,7 @@ app.use(helmet())
 app.use(bodyParser.json())
 
 app.use('/logs', serveIndex((path.join(__dirname, DIR_NAME))));
-app.use('/logs', app.static((path.join(__dirname, DIR_NAME))));
+app.use('/logs', express.static((path.join(__dirname, DIR_NAME))));
 
 
 const dir = path.join(__dirname, DIR_NAME);
