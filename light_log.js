@@ -16,7 +16,7 @@ app.use(helmet())
 app.use(bodyParser.json())
 
 app.use('/logs', serveIndex((path.join(__dirname, DIR_NAME))));
-app.use('/logs', express.static((path.join(__dirname, DIR_NAME))));
+app.use('/logs', app.static((path.join(__dirname, DIR_NAME))));
 
 
 const dir = path.join(__dirname, DIR_NAME);
