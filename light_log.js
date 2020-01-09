@@ -36,7 +36,7 @@ app.post('/', (req, res) => {
     console.log(data);
 
     filePath = `${dir}/${data['address']}`;
-    fileContents = `${data['address']},${data['val']},${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}\n`
+    fileContents = `${data['address']},${data['val']},${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')},${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}\n`
     fs.appendFile(filePath, fileContents, function (err) {
         if (err) {
             console.log(err);
