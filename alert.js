@@ -21,7 +21,7 @@ app.listen(PORT, () => {
 
 app.post('/alert', (req, res) => {
 
-    const node = req.body['event']['data']['new']['node_id'];
+    const node = req.body['event']['data']['new']['node_device_id'];
 
     const message = {
         to: '/topics/all',
