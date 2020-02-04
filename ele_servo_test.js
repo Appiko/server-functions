@@ -91,21 +91,20 @@ function parseRFPacket(gateway_dep_id, gateway_dev_id, payload) {
     let deviceId = getDeviceId(payload);
     let nodePacketType = payload.spliceFirst();
     let nodeVBattery = payload.spliceFirst() * 0.025;
-    console.log(`${deploymentId}, ${deviceId}, ${nodePacketType}, ${nodeVBattery}`);
     switch (nodePacketType) {
         case 0:
             console.log("ALIVE");
-            logToFile(RF_PREFIX, ALIVE_FILE, `${deploymentId},${deviceId},${nodeVBattery}`);
+            logToFile(RF_PREFIX, ALIVE_FILE, `${deploymentId},${deviceId},${nodeVBattery}V`);
             return true;
             break;
         case 1:
             console.log("SENSING");
-            logToFile(RF_PREFIX, ALERT_FILE, `${deploymentId},${deviceId},${nodeVBattery},${payload}`);
+            logToFile(RF_PREFIX, ALERT_FILE, `${deploymentId},${deviceId},${nodeVBattery}V,${payload}`);
             return true;
             break;
         case 2:
             console.log("MAINTENANCE");
-            logToFile(RF_PREFIX, MAINTAIN_FILE, `${deploymentId},${deviceId},${nodeVBattery},${payload}`);
+            logToFile(RF_PREFIX, MAINTAIN_FILE, `${deploymentId},${deviceId},${nodeVBattery}V,${payload}`);
             return true;
             break;
         default:
@@ -114,7 +113,7 @@ function parseRFPacket(gateway_dep_id, gateway_dev_id, payload) {
             break;
     }
     //TODO: Impr/remove
-    console.log(`Battery voltage = ${nodeVBattery}; Data = ${payload}`);
+    console.log(`Battery voltage = ${nodeVBattery}V; Data = ${payload}`);
     return false;
 }
 
@@ -126,7 +125,6 @@ function getDeviceId(z) {
 app.listen(PORT, () => console.log(`${APP_NAME} listening on port ${PORT}`))
 
 function logToFile(type, log_type, data) {
-    console.log(`logging ${id}`);
     let filePath = `${dir}/${type}_${log_type}`;
     let fileContents = data + ',' + Date() + '\n';
     fs.appendFile(filePath, fileContents, function (err) {
