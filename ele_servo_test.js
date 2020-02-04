@@ -20,7 +20,9 @@ const MAINTAIN_FILE = "maintain_log"
 const ALERT_FILE = "alert_log"
 const DIR_NAME = "ele-servo-logs"
 
-
+Array.prototype.spliceFirst = function () {
+    return this.splice(0, 1)[0];
+};
 
 let dir = path.join(__dirname, DIR_NAME);
 if (!fs.existsSync(dir)) {
@@ -31,8 +33,9 @@ if (!fs.existsSync(dir)) {
 app.get(`/:id/:up`, (req, res) => {
     id = req.params.id;
     up = req.params.up;
+
     try {
-        logEsp(id, up ? `up` : `down`);
+        logEsp(id, parseInt(up) ? `up` : `down`);
         res.sendStatus(200);
     } catch (error) {
         console.dir(error);
