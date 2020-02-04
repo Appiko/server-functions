@@ -33,9 +33,10 @@ app.get(`/:id/:up`, (req, res) => {
     up = req.params.up;
     try {
         logEsp(id, up ? `up` : `down`);
+        res.sendStatus(200);
     } catch (error) {
         console.dir(error);
-        res.send(400);
+        res.sendStatus(400);
     }
 })
 
