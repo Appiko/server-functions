@@ -15,7 +15,6 @@ const APP_NAME = "ELE SERVO TEST"
 const PORT = 3335
 
 const RF_PREFIX = "rf"
-const ESP_PREFIX = "esp"
 const ALIVE_FILE = "alive_log"
 const MAINTAIN_FILE = "maintain_log"
 const ALERT_FILE = "alert_log"
@@ -29,10 +28,11 @@ if (!fs.existsSync(dir)) {
     console.log(`Creating dir ${dir}`);
 }
 
-app.get(`/:id`, (req, res) => {
+app.get(`/:id/:up`, (req, res) => {
     id = req.params.id;
+    up = req.params.up;
     try {
-        logToFile(ESP_PREFIX, ALERT_FILE, id)
+        logEsp(id, up ? `up` : `down`);
     } catch (error) {
         console.dir(error);
         res.send(400);
@@ -124,8 +124,17 @@ app.listen(PORT, () => console.log(`${APP_NAME} listening on port ${PORT}`))
 function logToFile(type, log_type, data) {
     console.log(`logging ${id}`);
     let filePath = `${dir}/${type}_${log_type}`;
-    let fileContents;
-    fileContents = data + ',' + Date() + '\n';
+    let fileContents = data + ',' + Date() + '\n';
+    fs.appendFile(filePath, fileContents, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+}
+
+function logErr(data) {
+    let filePath = `${dir}/err`;
+    let fileContents = data + ',' + Date() + '\n';
 
     fs.appendFile(filePath, fileContents, function (err) {
         if (err) {
@@ -133,10 +142,10 @@ function logToFile(type, log_type, data) {
         }
     });
 }
-function logErr(data) {
-    let filePath = `${dir}/err`;
-    let fileContents = data + ',' + Date() + '\n';
 
+function logEsp(id, state) {
+    let filePath = `${dir}/${id}_log`;
+    let fileContents = state + ',' + Date() + '\n';
     fs.appendFile(filePath, fileContents, function (err) {
         if (err) {
             console.log(err);
