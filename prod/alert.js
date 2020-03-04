@@ -25,10 +25,12 @@ app.post('/alert', (req, res) => {
 
     const message = {
         condition: "'all' in topics|| 'prod_gps_pillar' in topics",
-        priority: "high",
         notification: {
             title: `🚨🚨 Alert!! 🐘🏃`,
             body: `Seeing conflicts at node ${node}`,
+        },
+        android: {
+            priority: "high"
         },
     }
 
