@@ -8,7 +8,7 @@ const path = require('path');
 const { exec } = require('child_process');
 
 const FCM = require('fcm-node')
-const serverKey = require('./sense-ele-firebase-service-account.json')
+const serverKey = require(`${__dirname}/../sense-ele-firebase-service-account.json`)
 const fcm = new FCM(serverKey)
 
 const app = express();

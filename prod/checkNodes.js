@@ -1,6 +1,6 @@
 const axios = require('axios');
 const FCM = require('fcm-node')
-const serverKey = require('./sense-ele-firebase-service-account.json')
+const serverKey = require(`${__dirname}/../sense-ele-firebase-service-account.json`)
 const fcm = new FCM(serverKey)
 
 const query = { "query": "{ getdeadnodes { id, number } }" }
