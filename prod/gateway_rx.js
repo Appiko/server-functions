@@ -30,16 +30,13 @@ app.post('/', async (req, res) => {
                 packetType = z.spliceFirst();
                 payloadLength = 2;
                 payload = z;
-                console.log(`type: ${packetType}, length: ${payloadLength}, payload: ${payload}`);
-            } else {
-
+            }
+            else {
                 packetType = z.spliceFirst();
                 payloadLength = z.spliceFirst();
                 payload = z.splice(0, payloadLength);
             }
-
             console.log(`type: ${packetType}, length: ${payloadLength}, payload: ${payload}`);
-
             result = await parsePacket(gateway_dep_id, gateway_dev_id, packetType, payload);
         }
         if (result) {
@@ -148,7 +145,7 @@ function getLatLonDiff(lat1, lon1, lat2, lon2) {
     var Δλ = (lon2 - lon1).toRadians();
     var a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
         Math.cos(φ1) * Math.cos(φ2) *
-        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
     console.log(φ1);
