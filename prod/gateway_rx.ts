@@ -50,17 +50,16 @@ app.post('/', async (req: any, res: any) => {
             let packetType: number = 0;
             let payloadLength: number = 0;
             let payload: Array<number> = [];
-            if (z.length > 4) {
-                packetType = z.spliceFirst()
-                payloadLength = z.spliceFirst()
-                payload = z.splice(0, payloadLength)
-                console.log(`type: ${packetType}, length: ${payloadLength}, payload: ${payload}`)
-            } if (z.length == 3) {
+            if (z.length == 3) {
                 packetType = z.spliceFirst()
                 payloadLength = 2
                 payload = z
-                console.log(`type: ${packetType}, length: ${payloadLength}, payload: ${payload}`)
+            } else {
+                packetType = z.spliceFirst()
+                payloadLength = z.spliceFirst()
+                payload = z.splice(0, payloadLength)
             }
+            console.log(`type: ${packetType}, length: ${payloadLength}, payload: ${payload}`)
 
             result = await parsePacket(gateway_dep_id, gateway_dev_id, packetType, payload);
         }
