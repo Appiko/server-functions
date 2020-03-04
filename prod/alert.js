@@ -24,7 +24,7 @@ app.post('/alert', (req, res) => {
     const node = req.body['event']['data']['new']['node_id'];
 
     const message = {
-        to: "topics/all",
+        to: "/topics/all",
         notification: {
             title: `🚨🚨 Alert!! 🐘🏃`,
             body: `Seeing conflicts at node ${node}`,
