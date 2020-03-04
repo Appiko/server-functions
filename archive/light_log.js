@@ -1,6 +1,6 @@
 const APP_NAME = "light log"
 const PORT = 3100
-const DIR_NAME = "/light-logs"
+const DIR_NAME = "/logs/light-logs"
 
 
 const express = require('express')
