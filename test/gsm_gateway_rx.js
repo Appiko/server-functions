@@ -1,3 +1,8 @@
+const APP_NAME = "GSM Gateway Rx"
+const PORT = 3300
+const FILE_NAME = "recieved_requests2.log"
+
+
 const app = require('express')()
 const bodyParser = require('body-parser')
 const helmet = require('helmet')
