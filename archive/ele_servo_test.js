@@ -18,7 +18,7 @@ const RF_PREFIX = "rf"
 const ALIVE_FILE = "alive_log"
 const MAINTAIN_FILE = "maintain_log"
 const ALERT_FILE = "alert_log"
-const DIR_NAME = "/logs/ele-servo-logs"
+const DIR_NAME = `${__dirname}/logs/ele-servo-logs`
 
 Array.prototype.spliceFirst = function () {
     return this.splice(0, 1)[0];

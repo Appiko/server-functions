@@ -1,6 +1,5 @@
 const APP_NAME = "light log"
 const PORT = 3100
-const DIR_NAME = "/logs/light-logs"
 
 
 const express = require('express')
@@ -12,6 +11,7 @@ const path = require('path')
 const serveIndex = require('serve-index');
 
 
+const DIR_NAME = `${__dirname}/logs/light-logs`
 app.use(helmet())
 app.use(bodyParser.json())
 
