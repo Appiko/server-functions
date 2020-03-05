@@ -21,13 +21,14 @@ app.listen(PORT, () => {
 
 app.post('/alert', (req, res) => {
 
-    const node = req.body['event']['data']['new']['node_id'];
-
+    const node = req.body['event']['data']['new']['node_device_id'];
+    const node_deployment_id = req.body['event']['data']['new']['node_deployment_id'];
+    console.log([node, node_deployment_id]);
     const message = {
-        to: "/topics/all",
+        to: `/topics/${node_deployment_id}`,
         notification: {
-            title: `🚨🚨 Alert!! 🐘🏃`,
-            body: `Seeing conflicts at node ${node}`,
+            title: `🚨🚨 Alert`,
+            body: `seeing conflicts at node ${node}`,
         },
     }
 
@@ -40,5 +41,5 @@ app.post('/alert', (req, res) => {
             console.log(`Sent alert for node ${node}`)
         }
     })
-    res.send(`Sent alert for node ${node}`);
+    res.send(`sent alert for node ${node}`);
 });
