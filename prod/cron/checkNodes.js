@@ -1,9 +1,16 @@
 const axios = require('axios');
 const FCM = require('fcm-node')
-const serverKey = require(`${__dirname}/../sense-ele-firebase-service-account.json`)
+const serverKey = require(`${__dirname}/../../sense-ele-firebase-service-account.json`)
 const fcm = new FCM(serverKey)
 
-const query = { "query": "{ getdeadnodes { id, number } }" }
+interval = process.argv[2];
+deployment_id = process.argv[3];
+
+console.log([interval, deployment_id]);
+
+const query = {
+    "query": `query {getdeadnodes(args: {dep_id: ${deployment_id}, diff_time: "${interval}"}){device_id}}`
+}
 const axiosQuery = {
     method: 'POST',
     url: process.env.GQLENDPOINT,
@@ -22,9 +29,9 @@ axios(axiosQuery)
         if (deadNodes.length > 0) {
             console.log(`Found ${deadNodes.length} dead notes, sending notification`)
             const message = {
-                to: '/topics/all',
+                to: `/topics/${deployment_id}`,
                 notification: {
-                    title: `💀💀 Dead Nodes`,
+                    title: `Dead Nodes 💀💀 `,
                     body: `${deadNodes.length} ${deadNodes.length > 1 ? 'nodes are' : 'node is'} dead.`,
                     tag: 'dead_node'
                 },

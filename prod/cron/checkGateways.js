@@ -1,9 +1,14 @@
 const axios = require('axios');
 const FCM = require('fcm-node')
-const serverKey = require(`${__dirname}/../sense-ele-firebase-service-account.json`)
+const serverKey = require(`${__dirname}/../../sense-ele-firebase-service-account.json`)
 const fcm = new FCM(serverKey)
 
-const query = { "query": "{ getdeadgateways { id, name } }" }
+interval = process.argv[2];
+deployment_id = process.argv[3];
+
+const query = {
+    "query": `query {getdeadgateways(args: {dep_id: ${deployment_id}, diff_time: "${interval}"}){device_id}}`
+}
 const axiosQuery = {
     method: 'POST',
     url: process.env.GQLENDPOINT,
@@ -23,9 +28,9 @@ axios(axiosQuery)
         if (deadgateways.length > 0) {
             console.log(`Found ${deadgateways.length} dead gateways, sending notification`)
             const message = {
-                to: '/topics/all',
+                to: `/topics/${deployment_id}`,
                 notification: {
-                    title: `💀💀 Dead gateways`,
+                    title: `Dead gateways 💀💀`,
                     body: `${deadgateways.length} ${deadgateways.length > 1 ? 'gateways are' : 'gateway is'} dead.`,
                     tag: 'dead_gateway'
                 },

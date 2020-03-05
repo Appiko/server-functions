@@ -27,7 +27,7 @@ app.post('/alert', (req, res) => {
     const message = {
         to: `/topics/${node_deployment_id}`,
         notification: {
-            title: `🚨🚨 Alert`,
+            title: `Alert 🚨🚨`,
             body: `seeing conflicts at node ${node}`,
         },
     }
