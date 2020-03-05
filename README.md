@@ -18,6 +18,6 @@ Saving it in ~/.bash_profile is a better option
 
 Run the checkNodes / checkGateways
 
-`node checkGateways.js`
+`node cron/checkNodes.js '10 mins' 1`
 
 This should most likely be called every x mins as a cron job.
