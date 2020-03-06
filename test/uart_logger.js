@@ -47,7 +47,8 @@ app.all('/delete-contents/:page', (req, res) => {
 })
 
 function updateFile(fileContent, page) {
-    fs.appendFile(dir + page + ".log", Date().replace(RegExp(" GMT.*"), '') + '\t' + fileContent + '\n', { flag: 'a' }, function (err) {
+    fileContent = fileContent.split("\n").map(line => `${Date().replace(RegExp(" GMT.*"), '')}\t${line}\n`).join('');
+    fs.appendFile(dir + page + ".log", fileContent, { flag: 'a' }, function (err) {
         if (err) throw err;
     });
 }
