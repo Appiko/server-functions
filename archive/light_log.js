@@ -11,7 +11,7 @@ const path = require('path')
 const serveIndex = require('serve-index');
 
 
-const DIR_NAME = `${__dirname}/logs/light-logs`
+const DIR_NAME = `/logs/light-logs`
 app.use(helmet())
 app.use(bodyParser.json())
 

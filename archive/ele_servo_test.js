@@ -18,7 +18,7 @@ const RF_PREFIX = "rf"
 const ALIVE_FILE = "alive_log"
 const MAINTAIN_FILE = "maintain_log"
 const ALERT_FILE = "alert_log"
-const DIR_NAME = `${__dirname}/logs/ele-servo-logs`
+const DIR_NAME = '/logs/ele-servo-logs'
 
 Array.prototype.spliceFirst = function () {
     return this.splice(0, 1)[0];
@@ -30,7 +30,7 @@ if (!fs.existsSync(dir)) {
     console.log(`Creating dir ${dir}`);
 }
 
-app.get(`/:id/:up`, (req, res) => {
+app.get(`/: id /: up`, (req, res) => {
     id = req.params.id;
     up = req.params.up;
 
@@ -53,7 +53,7 @@ app.post('/', (req, res) => {
             let packetType = z.spliceFirst();
             let payloadLength = z.spliceFirst();
             let payload = z.splice(0, payloadLength);
-            console.log(`type: ${packetType}, length: ${payloadLength}, payload: ${payload}`);
+            console.log(`type: ${packetType}, length: ${payloadLength}, payload: ${payload} `);
             result = parsePacket(gateway_dep_id, gateway_dev_id, packetType, payload);
         }
         if (result) {
@@ -94,38 +94,38 @@ function parseRFPacket(gateway_dep_id, gateway_dev_id, payload) {
     switch (nodePacketType) {
         case 0:
             console.log("ALIVE");
-            logToFile(RF_PREFIX, ALIVE_FILE, `${deploymentId},${deviceId},${nodeVBattery}V`);
+            logToFile(RF_PREFIX, ALIVE_FILE, `${deploymentId}, ${deviceId}, ${nodeVBattery} V`);
             return true;
             break;
         case 1:
             console.log("SENSING");
-            logToFile(RF_PREFIX, ALERT_FILE, `${deploymentId},${deviceId},${nodeVBattery}V,${payload}`);
+            logToFile(RF_PREFIX, ALERT_FILE, `${deploymentId}, ${deviceId}, ${nodeVBattery} V, ${payload} `);
             return true;
             break;
         case 2:
             console.log("MAINTENANCE");
-            logToFile(RF_PREFIX, MAINTAIN_FILE, `${deploymentId},${deviceId},${nodeVBattery}V,${payload}`);
+            logToFile(RF_PREFIX, MAINTAIN_FILE, `${deploymentId}, ${deviceId}, ${nodeVBattery} V, ${payload} `);
             return true;
             break;
         default:
             console.log("BAD PACKET");
-            logErr(`Node packet type: ${nodePacketType}`)
+            logErr(`Node packet type: ${nodePacketType} `)
             break;
     }
     //TODO: Impr/remove
-    console.log(`Battery voltage = ${nodeVBattery}V; Data = ${payload}`);
+    console.log(`Battery voltage = ${nodeVBattery} V; Data = ${payload} `);
     return false;
 }
 
 function getDeviceId(z) {
-    return parseInt(`0x${z.splice(0, 2).map(a => a.toString(16).padStart(2, '0')).join('')}`, 16);
+    return parseInt(`0x${z.splice(0, 2).map(a => a.toString(16).padStart(2, '0')).join('')} `, 16);
 }
 
 
-app.listen(PORT, () => console.log(`${APP_NAME} listening on port ${PORT}`))
+app.listen(PORT, () => console.log(`${APP_NAME} listening on port ${PORT} `))
 
 function logToFile(type, log_type, data) {
-    let filePath = `${dir}/${type}_${log_type}`;
+    let filePath = `${dir} /${type}_${log_type}`;
     let fileContents = data + ',' + Date() + '\n';
     fs.appendFile(filePath, fileContents, function (err) {
         if (err) {
