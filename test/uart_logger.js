@@ -24,18 +24,11 @@ app.listen(PORT, () => {
 
 
 app.post('/:page', (req, res) => {
-    if (!req.params['page']) {
-        req.params['page'] = 1;
-    }
-    let z = [...req.body]
     updateFile(req.body, req.params['page']);
     res.status(200).send();
 });
 
 app.get('/contents/:page', (req, res) => {
-    if (!req.params['page']) {
-        req.params['page'] = 1;
-    }
     try {
         fs.readFile(dir + req.params['page'] + ".log", function (err, data) {
             res.writeHead(200, null, { 'Content-Type': 'text/plain' })
