@@ -11,7 +11,7 @@ const DIR_NAME = `/logs/uart/`
 
 app.use(helmet())
 app.use(bodyParser.text())
-let dir = path.join(__dirname, DIRNAME);
+let dir = path.join(__dirname, DIR_NAME);
 if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
     console.log(`Creating dir ${dir}`);
@@ -24,14 +24,20 @@ app.listen(PORT, () => {
 
 
 app.post('/:page', (req, res) => {
+    if (!req.params['page']) {
+        req.params['page'] = 1;
+    }
     let z = [...req.body]
-    updateFile(req.body, req.params['page'] ?? 1);
+    updateFile(req.body, req.params['page']);
     res.status(200).send();
 });
 
 app.get('/contents/:page', (req, res) => {
+    if (!req.params['page']) {
+        req.params['page'] = 1;
+    }
     try {
-        fs.readFile(dir + req.params['page'] ?? 1 + ".log", function (err, data) {
+        fs.readFile(dir + req.params['page'] + ".log", function (err, data) {
             res.writeHead(200, null, { 'Content-Type': 'text/plain' })
             res.write(data);
             res.end();
