@@ -92,12 +92,12 @@ async function parseRFPacket(gateway_dep_id, gateway_dev_id, payload) {
             let nodeLon = getNextDeg(payload);
             let [init_lat, init_lon] = await getLatLon(deploymentId, deviceId);
             if (init_lat == init_lon && init_lon == -1) {
+                console.error(`Cannot find device (${deploymentId},${deviceId})`);
                 break;
             }
             let diffMts = getLatLonDiff(nodeLat, nodeLon, init_lat, init_lon);
-            //check if alert
-            console.log(`Diff meters = ${diffMts}`);
             if (diffMts > 10) {
+                console.log(`Alert on node (${deploymentId},${deviceId}) Diff meters = ${diffMts}`);
                 sendAlert(gateway_dep_id, gateway_dev_id, deploymentId, deviceId);
             }
             // update
@@ -134,7 +134,7 @@ async function parseRFPacket(gateway_dep_id, gateway_dev_id, payload) {
     }
     //TODO: Impr/remove
     console.log(`Battery voltage = ${nodeVBattery}; Data = ${payload}`);
-    return false;
+    return true;
 }
 function getNextDeg(payload) {
     return parseInt(payload.splice(0, 4).reverse().map(payload => payload.toString(16)).join(''), 16) / 1000000;
