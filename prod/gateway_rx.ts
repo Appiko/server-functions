@@ -202,7 +202,7 @@ async function getLatLon(node_deployment_id: number, node_device_id: number) {
         }
       }`
     let data = await talkToDB(query);
-    if (data) {
+    if (data['node'].length) {
         return data['node'][0]['location'].replace(')', '').replace('(', '').split(',').map((x: string) => parseFloat(x))
     } else {
         return [-1, -1];
