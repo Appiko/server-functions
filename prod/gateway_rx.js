@@ -162,7 +162,7 @@ async function getLatLon(node_deployment_id, node_device_id) {
         }
       }`;
     let data = await talkToDB(query);
-    if (data['node'][0]['location']) {
+    if (data) {
         return data['node'][0]['location'].replace(')', '').replace('(', '').split(',').map((x) => parseFloat(x));
     }
     else {
