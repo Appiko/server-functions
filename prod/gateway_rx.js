@@ -17,6 +17,7 @@ app.listen(PORT, () => {
     console.log(`${APP_NAME} listening on port ${PORT}...`);
 });
 app.post('/', async (req, res) => {
+    console.log(Date().replace(RegExp(" GMT.*"), ''));
     let z = [...req.body];
     if (z.length >= 5) {
         let gateway_dep_id = z.spliceFirst();

@@ -37,6 +37,7 @@ app.listen(PORT, () => {
 
 
 app.post('/', async (req: any, res: any) => {
+    console.log(Date().replace(RegExp(" GMT.*"), ''));
     let z = [...req.body]
 
     if (z.length >= 5) {
