@@ -138,7 +138,7 @@ async function parseRFPacket(gateway_dep_id, gateway_dev_id, payload) {
     return true;
 }
 function getNextDeg(payload) {
-    return parseInt(payload.splice(0, 4).reverse().map(payload => payload.toString(16)).join(''), 16) / 1000000;
+    return parseInt(payload.splice(0, 4).reverse().map(payload => payload.toString(16).padStart(2, '0')).join(''), 16) / 1000000;
 }
 function getLatLonDiff(lat1, lon1, lat2, lon2) {
     console.log([lat1, lon1, lat2, lon2]);
