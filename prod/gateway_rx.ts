@@ -131,7 +131,7 @@ async function parseRFPacket(gateway_dep_id: number, gateway_dev_id: number, pay
             }
 
             let diffMts = getLatLonDiff(nodeLat, nodeLon, init_lat, init_lon);
-            if (diffMts > 10) {
+            if (diffMts > 25) {
                 console.log(`Alert on node (${deploymentId},${deviceId}) Diff meters = ${diffMts}`);
                 sendAlert(gateway_dep_id, gateway_dev_id, deploymentId, deviceId);
             }
