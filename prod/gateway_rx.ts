@@ -131,9 +131,12 @@ async function parseRFPacket(gateway_dep_id: number, gateway_dev_id: number, pay
             }
 
             let diffMts = getLatLonDiff(nodeLat, nodeLon, init_lat, init_lon);
-            if (diffMts > 25) {
+            if (diffMts > 25 && diffMts < 10000) {
                 console.log(`Alert on node (${deploymentId},${deviceId}) Diff meters = ${diffMts}`);
                 sendAlert(gateway_dep_id, gateway_dev_id, deploymentId, deviceId);
+            } else if (diffMts > 10000) {
+                console.log(`GPS Alert on node (${deploymentId},${deviceId}) Diff meters = ${diffMts}`);
+                sendGPSAlert(deploymentId, deviceId);
             }
 
             // update
@@ -229,6 +232,14 @@ function sendAlert(gateway_dep_id: number, gateway_dev_id: number, device_dep_id
         }
       }`;
     talkToDB(query);
+}
+
+function sendGPSAlert(deploymentId: number, deviceId: number) {
+    const q = {
+        method: 'POST',
+        url: `http://localhost:3000/gps/${deploymentId}/${deviceId}`,
+    }
+    axios(q);
 }
 
 function getDeviceId(z: Array<number>) {

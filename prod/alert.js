@@ -1,5 +1,7 @@
 const APP_NAME = "alert"
+// NEVER TODO: if you really want to change the port number change it in `gateway_rx.ts` and recompile.
 const PORT = 3000
+
 
 
 
@@ -19,13 +21,15 @@ app.listen(PORT, () => {
     console.log(`${APP_NAME} listening on port ${PORT}...`)
 })
 
+
+
 app.post('/alert', (req, res) => {
 
     const node = req.body['event']['data']['new']['node_device_id'];
-    const node_deployment_id = req.body['event']['data']['new']['node_deployment_id'];
-    console.log([node, node_deployment_id]);
+    const nodeDeploymentId = req.body['event']['data']['new']['node_deployment_id'];
+    console.log([node, nodeDeploymentId]);
     const message = {
-        to: `/topics/${node_deployment_id}`,
+        to: `/topics/${nodeDeploymentId}`,
         notification: {
             title: `Alert 🚨🚨`,
             body: `seeing conflicts at node ${node}`,
@@ -34,7 +38,7 @@ app.post('/alert', (req, res) => {
 
     fcm.send(message, function (err, response) {
         if (err) {
-            console.log(`Something has gone wrong! ${err}`)
+            console.log(`Something went wrong! ${err}`)
 
             res.status(500).send(`Something went wrong! ${err}🚨🚨`)
         } else {
@@ -42,4 +46,30 @@ app.post('/alert', (req, res) => {
         }
     })
     res.send(`sent alert for node ${node}`);
+});
+
+
+app.post('/gps/:deploymentId/:deviceId', (req, res) => {
+
+    const nodeId = req.params['deviceId'];
+    const nodeDeploymentId = req.params['deploymentId']
+    console.log(`GPS lost on node ${nodeId}`);
+    const message = {
+        to: `/topics/${nodeDeploymentId}`,
+        notification: {
+            title: `GPS Signal Lost 📡📡`,
+            body: `GPS signals lost on node ${nodeId}`,
+        },
+    }
+
+    fcm.send(message, function (err, response) {
+        if (err) {
+            console.log(`Something went wrong! ${err}`)
+
+            res.status(500).send(`Something went wrong! ${err}🚨🚨`)
+        } else {
+            console.log(`Sent gps alert for node (${nodeDeploymentId},${nodeId})`)
+        }
+    })
+    res.send(`sent alert for node ${nodeId}`);
 });
