@@ -25,28 +25,27 @@ app.listen(PORT, () => {
 
 app.post('/alert', (req, res) => {
 
-    const node = req.body['event']['data']['new']['node_device_id'];
+    const nodeId = req.body['event']['data']['new']['node_device_id'];
     const nodeDeploymentId = req.body['event']['data']['new']['node_deployment_id'];
-    console.log([node, nodeDeploymentId]);
+    console.log([nodeId, nodeDeploymentId]);
     const message = {
         to: `/topics/${nodeDeploymentId}`,
         notification: {
             title: `Alert 🚨🚨`,
-            body: `seeing conflicts at node ${node}`,
-            tag: `alter/${nodeDeploymentId}/${node}`
+            body: `seeing conflicts at node ${nodeId}`,
+            tag: `alter/${nodeDeploymentId}/${nodeId}`
         },
     }
 
     fcm.send(message, function (err, response) {
         if (err) {
             console.log(`Something went wrong! ${err}`)
-
             res.status(500).send(`Something went wrong! ${err}🚨🚨`)
         } else {
-            console.log(`Sent alert for node ${node}`)
+            console.log(`Sent alert for node ${nodeId}`)
         }
     })
-    res.send(`sent alert for node ${node}`);
+    res.send(`sent alert for node ${nodeId}`);
 });
 
 
@@ -60,7 +59,7 @@ app.post('/gps/:deploymentId/:deviceId', (req, res) => {
         notification: {
             title: `GPS Signal Lost 📡📡`,
             body: `GPS signals lost on node ${nodeId}`,
-            tag: `gps/${nodeDeploymentId}/${node}`
+            tag: `gps/${nodeDeploymentId}/${nodeId}`
         },
     }
 
