@@ -33,6 +33,7 @@ app.post('/alert', (req, res) => {
         notification: {
             title: `Alert 🚨🚨`,
             body: `seeing conflicts at node ${node}`,
+            tag: `alter/${nodeDeploymentId}/${node}`
         },
     }
 
@@ -59,13 +60,13 @@ app.post('/gps/:deploymentId/:deviceId', (req, res) => {
         notification: {
             title: `GPS Signal Lost 📡📡`,
             body: `GPS signals lost on node ${nodeId}`,
+            tag: `gps/${nodeDeploymentId}/${node}`
         },
     }
 
     fcm.send(message, function (err, response) {
         if (err) {
             console.log(`Something went wrong! ${err}`)
-
             res.status(500).send(`Something went wrong! ${err}🚨🚨`)
         } else {
             console.log(`Sent gps alert for node (${nodeDeploymentId},${nodeId})`)
